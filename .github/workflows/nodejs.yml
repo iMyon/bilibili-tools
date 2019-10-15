@@ -5,8 +5,8 @@ on:
     branches:
       - master
   schedule:
-    # 每天23:50分执行（UTC时间15:50）
-    - cron: '50 15 * * *'
+    # 每天00:05分执行（UTC时间16:05）
+    - cron: '05 16 * * *'
 
 jobs:
   all-in-one:
