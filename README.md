@@ -1,13 +1,14 @@
-# bilibili-tools
+# bilibili-tools-auto
 
-[bilibili-tools](https://github.com/Dawnnnnnn/bilibili-tools)的修改版本，例用[Github action](https://github.com/features/actions)实现自动化，每天自动做每日任务：
+[bilibili-tools](https://github.com/Dawnnnnnn/bilibili-tools)的修改版本，
+利用[Github action](https://github.com/features/actions)实现自动化，每天定时任务执行：
 
 - 每日投币
 - 每日登录
 - 每日分享
 - 每日观看
 
-需要在**Settings-Secrets**配置参数：
+如有需求请fork并确保已开通Github action功能，需要在github项目设置（**Settings**-**Secrets**）里配置如下参数：
 
 参数名|描述|必需
 -----|---|-----

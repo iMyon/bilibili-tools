@@ -11,6 +11,10 @@ import re
 import datetime
 from urllib import parse
 
+is_disable_coin = os.getenv('IS_DISABLE_COIN') or None
+is_disable_share = os.getenv('IS_DISABLE_SHARE') or None
+is_disable_watch = os.getenv('IS_DISABLE_WATCH') or None
+
 
 def CurrentTime():
     currenttime = str(int(time.mktime(datetime.datetime.now().timetuple())))
@@ -263,10 +267,11 @@ loop.run_until_complete(asyncio.wait(tasks1))
 loop2 = asyncio.get_event_loop()
 
 tasks2 = []
-if os.getenv('IS_DISABLE_COIN') is None:
+if is_disable_coin is None:
     tasks2.append(judge().coin_run())
-if os.getenv('IS_DISABLE_SHARE') is None:
+if is_disable_share is None:
     tasks2.append(judge().share_run())
-if os.getenv('IS_DISABLE_WATCH') is None:
+if is_disable_watch is None:
     tasks2.append(judge().watch_run())
-loop.run_until_complete(asyncio.wait(tasks2))
+if len(tasks2) > 0:
+    loop.run_until_complete(asyncio.wait(tasks2))
