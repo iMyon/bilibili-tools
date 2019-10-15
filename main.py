@@ -1,8 +1,9 @@
+# -*- coding: UTF-8 -*-
+import os
 import random
 import asyncio
 import requests
 import time
-import json
 import hashlib
 import rsa
 import base64
@@ -18,8 +19,12 @@ def CurrentTime():
 
 class login():
     cookies = ""
-    username = input("输入用户名:")
-    password = input("输入密码:")
+    username = os.getenv('B_USERNAME')
+    password = os.getenv('B_PASSWORD')
+    if username is None:
+        username = input("输入用户名:")
+    if password is None:
+        password = input("输入密码:")
     headers = {
         "Host": "api.bilibili.com",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36",
@@ -220,39 +225,33 @@ class judge(login):
         print("watch_Av_state:", response.text)
 
     async def coin_run(self):
-        while 1:
-            try:
-                i = await self.query_reward()
-                coin_exp = i[3]
-                while coin_exp < 50:
-                    await self.givecoin()
-                    coin_exp = coin_exp + 10
-                if coin_exp == 50:
-                    print("投币任务完成")
-                    await asyncio.sleep(86400)
-                    await self.coin_run()
-            except:
-                print("coin_run出错")
+        try:
+            i = await self.query_reward()
+            coin_exp = i[3]
+            while coin_exp < 50:
+                await self.givecoin()
+                coin_exp = coin_exp + 10
+            if coin_exp == 50:
+                print("投币任务完成")
+                await self.coin_run()
+        except:
+            print("coin_run出错")
 
     async def share_run(self):
-        while 1:
-            try:
-                await self.share()
-                print("分享任务完成")
-                await asyncio.sleep(21600)
-            except:
-                print("share_run出错")
+        try:
+            await self.share()
+            print("分享任务完成")
+        except:
+            print("share_run出错")
 
     async def watch_run(self):
-        while 1:
-            try:
-                video_list = await self.getsubmit_video()
-                aid = video_list[random.randint(0, len(video_list))]
-                cid = await self.get_cid(aid)
-                await self.watch_av(aid, cid)
-                await asyncio.sleep(21600)
-            except:
-                print("watch_run出错")
+        try:
+            video_list = await self.getsubmit_video()
+            aid = video_list[random.randint(0, len(video_list))]
+            cid = await self.get_cid(aid)
+            await self.watch_av(aid, cid)
+        except:
+            print("watch_run出错")
 
 
 loop = asyncio.get_event_loop()
@@ -263,10 +262,11 @@ loop.run_until_complete(asyncio.wait(tasks1))
 
 loop2 = asyncio.get_event_loop()
 
-tasks2 = [
-    judge().coin_run(),
-    judge().share_run(),
-    judge().watch_run(),
-
-]
+tasks2 = []
+if os.getenv('IS_DISABLE_COIN') is None:
+    tasks2.append(judge().coin_run())
+if os.getenv('IS_DISABLE_SHARE') is None:
+    tasks2.append(judge().share_run())
+if os.getenv('IS_DISABLE_WATCH') is None:
+    tasks2.append(judge().watch_run())
 loop.run_until_complete(asyncio.wait(tasks2))

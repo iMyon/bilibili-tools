@@ -1,39 +1,18 @@
 # bilibili-tools
 
-挖坑开始
+[bilibili-tools](https://github.com/Dawnnnnnn/bilibili-tools)的修改版本，例用[Github action](https://github.com/features/actions)实现自动化，每天自动做每日任务：
 
-此项目为 bilibili 主站各项功能实现
+- 每日投币
+- 每日登录
+- 每日分享
+- 每日观看
 
-另一已完成项目为 bilibili 直播站各功能实现 https://github.com/Dawnnnnnn/bilibili-live-tools
+需要在**Settings-Secrets**配置参数：
 
-目前已实现:
-
-    <!-- 风纪委员投票 -->
-    每日投币
-    每日登录
-    每日分享
-    每日观看
-
-Q:观看，分享，投币的视频如何选取?
-
-A:拉取关注列表，并在关注列表里 up 主投稿中随机选几个视频
-
-Q:如何关闭自己不想要的功能?
-
-A:
-
->
-
-    tasks2 = [
-        # judge().coin_run(),   # 投币任务
-        judge().share_run(),  # 分享任务
-        judge().watch_run(),  # 观看任务
-        judge().judge_run()   # 仲裁案件]
-
-将你不想开启的功能删掉或者注释掉即可
-
-默认不打开投币功能，如想快速提高主站等级，把那一行注释去掉就可以了
-
-挖坑结束，后期完善一下 issue 里提到的案件仲裁问题就没事了。
-
-懒的加那个投票阙值了。。。。案件仲裁直接删了....还想用的话就用上一个版本。。
+参数名|描述|必需
+-----|---|-----
+B_USERNAME|用户名|是
+B_PASSWORD|密码|是
+IS_DISABLE_COIN|是否取消自动投币，“是”设置为1，否不设置|否
+IS_DISABLE_SHARE|是否取消自动分享，“是”设置为1，否不设置|否
+IS_DISABLE_WATCH|是否取消自动观看，“是”设置为1，否不设置|否

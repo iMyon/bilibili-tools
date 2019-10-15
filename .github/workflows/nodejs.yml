@@ -1,0 +1,33 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    # 每天23:50分执行（UTC时间15:50）
+    - cron: '50 15 * * *'
+
+jobs:
+  all-in-one:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Setup python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+          architecture: x64
+      - name: pip install
+        run: |
+          pip install -r requirements.txt
+
+      - name: execute script
+        env:
+          B_USERNAME: ${{secrets.B_USERNAME}}
+          B_PASSWORD: ${{secrets.B_PASSWORD}}
+          IS_DISABLE_COIN: ${{secrets.IS_DISABLE_COIN}}
+          IS_DISABLE_SHARE: ${{secrets.IS_DISABLE_SHARE}}
+          IS_DISABLE_WATCH: ${{secrets.IS_DISABLE_WATCH}}
+        run: |
+          python ./main.py
